@@ -21,6 +21,7 @@
         <mkdir dir="${dir.output}/staging/Klout"/>
         <mkdir dir="${dir.output}/staging/Guzzle"/>
         <mkdir dir="${dir.output}/staging/Symfony"/>
+
         <patternset id="sdk-files">
             <include name="**/*.php" />
             <include name="**/*.pem" />
@@ -35,6 +36,7 @@
                 <patternset refid="sdk-files"/>
             </fileset>
         </copy>
+
         <copy file="${project.basedir}/LICENSE" tofile="${dir.output}/staging/Klout/LICENSE"/>
         
         <!-- Copy Symfony dependencies -->
@@ -43,6 +45,7 @@
                 <include name="**/*.php" />
             </fileset>
         </copy>
+
         <copy todir="${dir.output}/staging">
             <fileset dir="vendor/symfony/class-loader">
                 <include name="**/*.php" />
