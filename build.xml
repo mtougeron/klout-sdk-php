@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="klout-sdk-php" default="build" basedir=".">
+    <property name="dir.output" value="${project.basedir}/build/artifacts" />
+    <property name="coverage" value="false" />
+    <property name="sdk_url" value="https://github.com/mtougeron/klout-sdk-php" />
+    
+    <fileset id="src_files" dir="${project.basedir}/src" includes="**/*.php" />
+
+    <target name="phpunit" description="Run unit tests using PHPUnit">
+        <exec passthru="true" command="vendor/bin/phpunit" />
+    </target>
+    
+    <target name="prepare" depends="clean">
+        <mkdir dir="${dir.output}"/>
+        <mkdir dir="${dir.output}/logs" />
+    </target>
+    
+    <target name="create-staging" description="Creates a staging directory for zip and phar creation">
+        <delete dir="${dir.output}/staging" failonerror="false" quiet="true"/>
+        <mkdir dir="${dir.output}/staging"/>
+        <mkdir dir="${dir.output}/staging/Klout"/>
+        <mkdir dir="${dir.output}/staging/Guzzle"/>
+        <mkdir dir="${dir.output}/staging/Symfony"/>
+        <patternset id="sdk-files">
+            <include name="**/*.php" />
+            <include name="**/*.pem" />
+            <include name="**/*.md5" />
+            <include name="**/LICENSE*" />
+        </patternset>
+
+        <!-- Copy deps -->
+        <copy file="${project.basedir}/build/klout-autoloader.php" tofile="${dir.output}/staging/klout-autoloader.php"/>
+        <copy todir="${dir.output}/staging">
+            <fileset dir="src">
+                <patternset refid="sdk-files"/>
+            </fileset>
+        </copy>
+        <copy file="${project.basedir}/LICENSE" tofile="${dir.output}/staging/Klout/LICENSE"/>
+        
+        <!-- Copy Symfony dependencies -->
+        <copy todir="${dir.output}/staging">
+            <fileset dir="vendor/symfony/event-dispatcher">
+                <include name="**/*.php" />
+            </fileset>
+        </copy>
+        <copy todir="${dir.output}/staging">
+            <fileset dir="vendor/symfony/class-loader">
+                <include name="**/*.php" />
+            </fileset>
+        </copy>
+
+        <!-- Copy Guzzle deps -->
+        <copy todir="${dir.output}/staging">
+            <fileset dir="vendor/guzzle/guzzle/src">
+                <patternset refid="sdk-files"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="phar" depends="create-staging" description="Create a phar with an autoloader">
+        <pharpackage destfile="build/klout.phar" stub="build/phar-stub.php" basedir="${dir.output}/staging">
+            <fileset dir="${dir.output}/staging">
+                <include name="**/**"/>
+            </fileset>
+            <metadata>
+                <element name="link" value="${sdk_url}" />
+            </metadata>
+        </pharpackage>
+    </target>
+ 
+    <target name="clean" description="Deletes build artifacts">
+        <delete dir="${dir.output}"/>
+    </target>
+
+    <target name="phplint">
+        <phplint>
+            <fileset refid="src_files" />
+        </phplint>
+    </target>
+ 
+<target name="build" depends="phplint, prepare, phpunit, phar"/> 
+</project>

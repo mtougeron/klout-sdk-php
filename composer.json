@@ -23,6 +23,7 @@
     },
     "require-dev": {
         "mockery/mockery": ">=0.7.2",
+        "symfony/class-loader": "*",
         "phpunit/phpunit": "3.7.*"        
     },
     "autoload": {

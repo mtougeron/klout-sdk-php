@@ -12,3 +12,6 @@ php-cs-fixer.phar
 .DS_Store?
 .DS_Store
 local*.php
+build/artifacts
+build/logs
+build/staging
