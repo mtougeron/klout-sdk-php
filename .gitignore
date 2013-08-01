@@ -3,4 +3,12 @@ LICENSE.txt
 README.txt
 demos/
 extras/documentation
-
+vendor/
+composer.lock
+composer.phar
+phpunit.phar
+php-cs-fixer.phar
+.idea/*
+.DS_Store?
+.DS_Store
+local*.php
