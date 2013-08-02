@@ -121,7 +121,7 @@ class Topic extends AbstractModel
             if (!$topic->getTopicId()) {
                 throw new InvalidArgumentException('Invalid topic data.');
             }
-            $topics[$topic->getTopicId()] = $topic;
+            $topics[(string)$topic->getTopicId()] = $topic;
         }
 
         return $topics;

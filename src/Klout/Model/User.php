@@ -106,7 +106,7 @@ class User extends AbstractModel
         return $this->influencers;
     }
 
-    public function setInfuencers(UserCollection $influencers)
+    public function setInfluencers(UserCollection $influencers)
     {
         $this->influencers = $influencers;
 
@@ -118,7 +118,7 @@ class User extends AbstractModel
         return $this->influencees;
     }
 
-    public function setInfuencees(UserCollection $influencees)
+    public function setInfluencees(UserCollection $influencees)
     {
         $this->influencees = $influencees;
 
@@ -175,8 +175,8 @@ class User extends AbstractModel
             $influencees = new UserCollection();
         }
 
-        $this->setInfuencers($influencers);
-        $this->setInfuencees($influencees);
+        $this->setInfluencers($influencers);
+        $this->setInfluencees($influencees);
 
         $topics = Topic::createTopicCollection($topicsData);
         $this->setTopics($topics);
@@ -207,7 +207,7 @@ class User extends AbstractModel
             if (!$user->getKloutId()) {
                 throw new InvalidArgumentException('Invalid user data.');
             }
-            $users[$user->getKloutId()] = $user;
+            $users[(string)$user->getKloutId()] = $user;
         }
 
         return $users;
