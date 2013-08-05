@@ -19,21 +19,37 @@ use Guzzle\Http\Exception\ServerErrorResponseException;
 use Guzzle\Http\Exception\MultiTransferException;
 use Guzzle\Http\Exception\RequestException as HttpRequestException;
 
+use Zend\Uri\Uri;
+use Zend\Validator\Uri as ValidatorUri;
+use Zend\Validator\Digits as ValidatorDigits;
+
 class Klout
 {
+    /*
+     * Constants for the different networks Klout supports
+     */
     const NETWORK_KLOUT = 'ks';
     const NETWORK_TWITTER = 'twitter';
     const NETWORK_TWITTER_ID = 'tw';
     const NETWORK_GOOGLE_PLUS = 'gp';
     const NETWORK_INSTAGRAM = 'ig';
 
+    /* @var String - The apiKey for your application */
     protected $apiKey;
 
+    /* @var String - The base uri for calling the Klout API */
     protected $apiBaseUri = 'http://api.klout.com/v2';
 
-    /* @var Guzzle\Http\Client */
+    /* @var Guzzle\Http\Client - Used to make the calls to the API */
     protected $client;
 
+    /**
+     * Construct the class
+     *
+     * @param String $apiKey
+     * @param String:Zend\Uri\Uri $apiBaseUri
+     * @throws InvalidArgumentException
+     */
     public function __construct($apiKey, $apiBaseUri = null)
     {
         if (empty($apiKey)) {
@@ -41,7 +57,7 @@ class Klout
         }
 
         if (!empty($apiBaseUri)) {
-            $this->apiBaseUri = $apiBaseUri;
+            $this->setApiBaseUri($apiBaseUri);
         }
 
         $this->createClient();
@@ -49,24 +65,64 @@ class Klout
         $this->setApiKey($apiKey);
     }
 
+    /**
+     * Create the default Client
+     *
+     * @return \Klout\Klout
+     */
     protected function createClient()
     {
         $client = new Client($this->apiBaseUri);
         $client->setUserAgent(__CLASS__, true);
         $this->setClient($client);
-    }
-
-    public function setApiBaseUri($apiBaseUri)
-    {
-        if (empty($apiBaseUri)) {
-            throw new InvalidArgumentException('Invalid API base uri.');
-        }
-        $this->apiBaseUri;
-        $this->createClient();
 
         return $this;
     }
 
+    /**
+     * 
+     * @param String:Zend\Uri\Uri $apiBaseUri
+     * @throws InvalidArgumentException
+     * @return \Klout\Klout
+     */
+    public function setApiBaseUri($apiBaseUri)
+    {
+        if (empty($apiBaseUri)) {
+            throw new InvalidArgumentException('apiBaseUri cannot be empty().');
+        }
+
+        if ($apiBaseUri instanceof Uri) {
+            // Convert the object to a string if necessary
+            $apiBaseUri = $apiBaseUri->toString();
+        } elseif (!is_string($apiBaseUri)) {
+            throw new InvalidArgumentException('apiBaseUri must be a String or Zend\\Uri\\Uri.');
+        }
+
+        // Validate the apiBaseUri
+        $validator = new ValidatorUri();
+        $validator->setAllowRelative(false);
+        if (!$validator->isValid($apiBaseUri)) {
+            $errors = $validator->getMessages();
+            $errorMessage = reset($errors);
+            throw new InvalidArgumentException('apiBaseUri is invalid: ' . $errorMessage);
+        }
+
+        $this->apiBaseUri = $apiBaseUri;
+
+        // Only create the client if one already exists.
+        if (isset($this->client)) {
+            $this->createClient();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set the apiKey
+     *
+     * @param String $apiKey
+     * @return \Klout\Klout
+     */
     public function setApiKey($apiKey)
     {
         $this->apiKey = $apiKey;
@@ -75,6 +131,13 @@ class Klout
         return $this;
     }
 
+    /**
+     * Set the Client for the class to use. This is so that you can manipulate your
+     * own instance of Guzzle\Http\Client and set it to be used.
+     *
+     * @param Client $client
+     * @return Client
+     */
     public function setClient(Client $client)
     {
         $this->client = $client;
@@ -82,38 +145,74 @@ class Klout
         return $this->client;
     }
 
+    /**
+     * Get the current Client
+     *
+     * @return Client
+     */
     public function getClient()
     {
         return $this->client;
     }
 
+    /**
+     * Get a Klout User by a Twitter username
+     *
+     * @param String $username
+     * @param Bool $fullData
+     * @return \Klout\Model\User
+     */
     public function getUserByTwitterUsername($username, $fullData = true)
     {
         return $this->getUserByNetwork(self::NETWORK_TWITTER, $username, $fullData);
     }
 
+    /**
+     * Get a Klout User by a Twitter user ID
+     *
+     * @param Numeric $userId
+     * @param Bool $fullData
+     * @return \Klout\Model\User
+     */
     public function getUserByTwitterId($userId, $fullData = true)
     {
         return $this->getUserByNetwork(self::NETWORK_TWITTER_ID, $userId, $fullData);
     }
 
+    /**
+     * Get a Klout User by a Google+ user ID
+     *
+     * @param Numeric $userId
+     * @param Bool $fullData
+     * @return \Klout\Model\User
+     */
     public function getUserByGooglePlusId($userId, $fullData = true)
     {
         return $this->getUserByNetwork(self::NETWORK_GOOGLE_PLUS, $userId, $fullData);
     }
 
-    public function getUserByInstagramId($userId, $fullData = true)
+    /**
+     * Get a Klout User by an Instagram user ID
+     *
+     * @param Numeric $userId
+     * @param Bool $fullData
+     * @return \Klout\Model\User
+     */
+    public function getUserByInstagramUserId($userId, $fullData = true)
     {
         return $this->getUserByNetwork(self::NETWORK_INSTAGRAM, $userId, $fullData);
     }
 
-    public function getTwitterId($kloutId)
+    /**
+     * Get a Twitter Identity for a Klout User ID
+     *
+     * @param Numeric $kloutId
+     * @return \Klout\Model\Identity
+     */
+    public function getTwitterIdentity($kloutId)
     {
+        $this->assertValidKloutId($kloutId);
 
-        $kloutId = trim($kloutId);
-        if (empty($kloutId)) {
-            throw new InvalidArgumentException('Missing Klout ID.');
-        }
         /* @var $request Request */
         $request = $this->client->get(
             'identity.json/klout/' . $kloutId . '/tw'
@@ -133,13 +232,9 @@ class Klout
         return $identity;
     }
 
-    public function getScore($kloutId)
+    public function getScoreForUser($kloutId)
     {
-
-        $kloutId = trim($kloutId);
-        if (empty($kloutId)) {
-            throw new InvalidArgumentException('Missing Klout ID.');
-        }
+        $this->assertValidKloutId($kloutId);
 
         /* @var $request Request */
         $request = $this->client->get(
@@ -158,23 +253,31 @@ class Klout
         return $score;
     }
 
+    /**
+     * Get a Klout User by their network ID
+     *
+     * @param String $networkName
+     * @param String $networkUserId
+     * @param Bool $fullData
+     * @throws InvalidArgumentException
+     * @return \Klout\Model\User
+     */
     public function getUserByNetwork($networkName, $networkUserId, $fullData = true)
     {
-        $networkName = trim($networkName);
-        $networkUserId = trim($networkUserId);
-        if (empty($networkName)) {
-            throw new InvalidArgumentException('Missing network name.');
-        } elseif (empty($networkUserId)) {
-            throw new InvalidArgumentException('Missing network user id.');
-        }
-        $networkName = urlencode(strtolower($networkName));
+        $this->assertValidNetworkName($networkName);
+        $this->assertValidUserIdForNetwork($networkName, $networkUserId);
 
         $idString = '';
         $queryParams = array();
-        if ($networkName != self::NETWORK_TWITTER) {
-            $idString = $networkUserId;
-        } else {
-            $queryParams['screenName'] = $networkUserId;
+        // The calls to the API based on the Twitter sceenName (username)
+        // is different from all the other network based ID lookups
+        switch ($networkName) {
+            case self::NETWORK_TWITTER:
+                $queryParams['screenName'] = $networkUserId;
+                break;
+            default:
+                $idString = $networkUserId;
+                break;
         }
 
         /* @var $request Request */
@@ -202,12 +305,18 @@ class Klout
         return $user;
     }
 
+    /**
+     * Get a Klout\Model\User by their Klout ID.
+     *
+     * @param String $kloutId
+     * @param Bool $fullData
+     * @throws InvalidArgumentException
+     * @throws ResourceNotFoundException
+     * @return \Klout\Model\User
+     */
     public function getUser($kloutId, $fullData = true)
     {
-        $kloutId = trim($kloutId);
-        if (empty($kloutId)) {
-            throw new InvalidArgumentException('Missing Klout ID.');
-        }
+        $this->assertValidKloutId($kloutId);
 
         try {
             // Get the data for the user
@@ -247,7 +356,7 @@ class Klout
         }
 
         if (empty($userData)) {
-            throw new ResourceNotFoundException('Could not find the user information for klout id: ' . $identity->getKloutId());
+            throw new ResourceNotFoundException('Could not find the user information for Klout user ID: ' . $identity->getKloutId());
         }
 
         $user = new User();
@@ -256,6 +365,18 @@ class Klout
         return $user;
     }
 
+    /**
+     * Transforms the exceptions thrown by \Guzzle\Http\Client
+     * into Klout specific ones. If it doesn't know how to handle
+     * the exception then it just re-throws it.
+     *
+     * @param HttpRequestException $e
+     * @throws NotAuthorizedException
+     * @throws ResourceNotFoundException
+     * @throws ServiceUnavailableException
+     * @throws Ambigous <HttpRequestException, \Guzzle\Http\Exception\ClientErrorResponseException, \Guzzle\Http\Exception\ServerErrorResponseException, \Guzzle\Http\Exception\MultiTransferException>
+     * @return array:NULL
+     */
     protected function handleHttpRequestException(HttpRequestException $e)
     {
 
@@ -287,6 +408,63 @@ class Klout
         // If we don't transform it to a Klout\Exception then
         // rethrow the original exception
         throw $e;
+    }
+
+    /**
+     * Validate the Klout ID
+     *
+     * @param String $kloutId
+     * @throws InvalidArgumentException
+     */
+    protected function assertValidKloutId($kloutId)
+    {
+        $validator = new ValidatorDigits();
+        if (!$validator->isValid($kloutId)) {
+            throw new InvalidArgumentException("'$kloutId'" . ' is not a valid Klout ID.');
+        }
+    }
+
+    /**
+     * Check to make sure the networkName is valid.
+     *
+     * @param String $networkName
+     * @throws InvalidArgumentException
+     */
+    protected function assertValidNetworkName($networkName)
+    {
+        if (!preg_match('/^[A-Za-z0-9]*$/', $networkName)) {
+            throw new InvalidArgumentException("'$networkName'" . ' is not a valid network name.');
+        }
+    }
+
+    /**
+     * Check to make sure the networkUserId is valid
+     *
+     * @param String $networkName
+     * @param String $networkUserId
+     * @throws InvalidArgumentException
+     */
+    protected function assertValidUserIdForNetwork($networkName, $networkUserId)
+    {
+        $this->assertValidNetworkName($networkName);
+
+        switch ($networkName) {
+            case self::NETWORK_GOOGLE_PLUS:
+            case self::NETWORK_KLOUT:
+            case self::NETWORK_TWITTER_ID:
+            case self::NETWORK_INSTAGRAM:
+                // These networks only allow numeric userIds
+                $validator = new ValidatorDigits();
+                if (!$validator->isValid($networkUserId)) {
+                    throw new InvalidArgumentException("'$networkUserId'" . ' is not a valid network user ID.');
+                }
+                break;
+            default:
+                if (!preg_match('/^[A-Za-z0-9]*$/', $networkUserId)) {
+                    throw new InvalidArgumentException("'$networkUserId'" . ' is not a valid network user ID.');
+                }
+                break;
+        }
     }
 
 }

@@ -19,7 +19,10 @@
     ],
     "require": {
         "php": ">=5.3.10",
-        "guzzle/guzzle": "3.7.*"
+        "guzzle/guzzle": "3.7.*",
+        "zendframework/zend-validator": "2.*",
+        "zendframework/zend-uri": "2.*",
+        "zendframework/zend-filter": "2.*"
     },
     "require-dev": {
         "mockery/mockery": ">=0.7.2",
