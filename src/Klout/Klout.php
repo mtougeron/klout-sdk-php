@@ -3,29 +3,30 @@
 namespace Klout;
 
 use Klout\Exception\InvalidArgumentException;
-use Klout\Exception\ResourceNotFoundException;
 use Klout\Exception\NotAuthorizedException;
+use Klout\Exception\ResourceNotFoundException;
 use Klout\Exception\ServiceUnavailableException;
 
-use Klout\Model\User;
 use Klout\Model\Identity;
 use Klout\Model\Score;
+use Klout\Model\User;
 
 use Guzzle\Http\Client;
-use Guzzle\Http\Message\Request;
-use Guzzle\Http\Message\Response;
 use Guzzle\Http\Exception\ClientErrorResponseException;
-use Guzzle\Http\Exception\ServerErrorResponseException;
 use Guzzle\Http\Exception\MultiTransferException;
 use Guzzle\Http\Exception\RequestException as HttpRequestException;
+use Guzzle\Http\Exception\ServerErrorResponseException;
+use Guzzle\Http\Message\Request;
+use Guzzle\Http\Message\Response;
 
 use Zend\Uri\Uri;
-use Zend\Validator\Uri as ValidatorUri;
 use Zend\Validator\Digits as ValidatorDigits;
+use Zend\Validator\Uri as ValidatorUri;
 
 class Klout
 {
-    /*
+
+    /**
      * Constants for the different networks Klout supports
      */
     const NETWORK_KLOUT = 'ks';
@@ -34,17 +35,29 @@ class Klout
     const NETWORK_GOOGLE_PLUS = 'gp';
     const NETWORK_INSTAGRAM = 'ig';
 
-    /* @var String - The apiKey for your application */
+    /**
+     * The apiKey for the application
+     *
+     * @var String
+     */
     protected $apiKey;
 
-    /* @var String - The base uri for calling the Klout API */
+    /**
+     * The base uri for calling the Klout API
+     *
+     * @var String
+     */
     protected $apiBaseUri = 'http://api.klout.com/v2';
 
-    /* @var Guzzle\Http\Client - Used to make the calls to the API */
+    /**
+     * Used to make the calls to the API
+     *
+     * @var Guzzle\Http\Client
+     */
     protected $client;
 
     /**
-     * Construct the class
+     * Constructor
      *
      * @param  String                   $apiKey
      * @param  String:Zend\Uri\Uri      $apiBaseUri

@@ -3,36 +3,72 @@
 namespace Klout\Model;
 
 use Klout;
+use Klout\Collection\Identity as IdentityCollection;
+use Klout\Collection\Topic as TopicCollection;
+use Klout\Collection\User as UserCollection;
+use Klout\Model\AbstractModel;
 use Klout\Model\Identity;
 use Klout\Model\Score;
 use Klout\Model\Topic;
-use Klout\Collection\User as UserCollection;
-use Klout\Collection\Topic as TopicCollection;
-use Klout\Collection\Identity as IdentityCollection;
 
 class User extends AbstractModel
 {
-    /* @var string - The user's Klout ID */
+
+    /**
+     * The user's Klout Id
+     *
+     * @var String
+     */
     protected $kloutId;
 
-    /* @var Klout\Collection\Identity - An array of the user's identities */
+    /**
+     * The identities for the user
+     *
+     * @var Klout\Collection\Identity
+     */
     protected $identities;
 
-    /* @var string - The user's nickname */
+    /**
+     * The user's nickname (nick)
+     * @var String
+     */
     protected $nickname;
 
-    /* @var Klout\Model\Score - The user's score */
+    /**
+     * The user's score
+     *
+     * @var Klout\Model\Score
+     */
     protected $score;
 
-    /* @var Klout\Collection\User - An array of users who influence this user */
+    /**
+     * The users who influence this user
+     *
+     * @var Klout\Collection\User
+     */
     protected $influencers;
 
-    /* @var Klout\Collection\User - An array of users who are influenced by this user */
+    /**
+     * The users who are influenced by this user
+     *
+     * @var Klout\Collection\User
+     */
     protected $influencees;
 
-    /* @var Klout\Collection\Topic - An array of topics for this user */
+    /**
+     * The topics for this user
+     *
+     * @var Klout\Collection\Topic
+     */
     protected $topics;
 
+    /**
+     * The constructor
+     *
+     * @param array $userData
+     * @param array $influenceData
+     * @param array $topicsData
+     */
     public function __construct(array $userData = null, array $influenceData = null, array $topicsData = null)
     {
 

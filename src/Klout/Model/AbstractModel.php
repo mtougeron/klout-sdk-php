@@ -5,6 +5,11 @@ namespace Klout\Model;
 abstract class AbstractModel
 {
 
+    /**
+     * Reflect the model and recursively transform it to an array
+     *
+     * @return array
+     */
     public function toArray()
     {
         $reflection = new \ReflectionClass($this);
