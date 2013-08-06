@@ -190,7 +190,7 @@ class User extends AbstractModel
             // will return the score data in a different format
             $scoreData = array(
                 'score' => $userData['score']['score'],
-                'bucket' => $userData['score']['bucket'],
+                'bucket' => isset($userData['score']['bucket']) ? $userData['score']['bucket'] : null,
                 'scoreDeltas' => $userData['scoreDeltas'],
             );
             $score->populate($userData['kloutId'], $scoreData);
