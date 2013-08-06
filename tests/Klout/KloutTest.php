@@ -28,7 +28,7 @@ class KloutTest extends \PHPUnit_Framework_TestCase
     protected function setupMockClient()
     {
 
-        $clientMock = $this->getMock('\Guzzle\Http\Client');
+        $clientMock = $this->getMock('\Guzzle\Http\Client', array(), array($this->baseUrl));
         $clientMock->expects($this->any())
             ->method('send')
             ->with($this->anything())
@@ -74,7 +74,7 @@ JSONEND;
     {
         $data = $this->getResponseData($effectiveUrl);
 
-        $responseMock = $this->getMock('\Guzzle\Http\Message\Response');
+        $responseMock = $this->getMock('\Guzzle\Http\Message\Response', array(), array(200));
         $responseMock->expects($this->any())
             ->method('json')
             ->will(
