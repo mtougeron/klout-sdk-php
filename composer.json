@@ -27,7 +27,8 @@
     "require-dev": {
         "phing/phing": "2.5.*",
         "symfony/class-loader": "*",
-        "phpunit/phpunit": "3.7.*"        
+        "phpunit/phpunit": "3.7.*",
+        "fabpot/php-cs-fixer": "*"
     },
     "autoload": {
         "psr-0": {
