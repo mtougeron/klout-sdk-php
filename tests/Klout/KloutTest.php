@@ -93,7 +93,7 @@ JSONEND;
 
     public function createRequestMock($effectiveUrl)
     {
-        $requestMock = $this->getMock('\Guzzle\Http\Message\Request');
+        $requestMock = $this->getMock('\Guzzle\Http\Message\Request', array(), array('GET', $this->baseUrl));
         $requestMock->expects($this->any())
             ->method('send')
             ->will($this->returnValue($this->createResponseMock($effectiveUrl)));
@@ -131,13 +131,7 @@ JSONEND;
     public function testCredentialsNotSet()
     {
         $this->setExpectedException('Klout\Exception\InvalidArgumentException');
-        $klout = new Klout();
-    }
-
-    public function testCredentialsNotSetEmptyString()
-    {
-        $this->setExpectedException('Klout\Exception\InvalidArgumentException');
-        $klout = new Klout('');
+        $klout = new Klout(null);
     }
 
     public function testApiBaseUrlNotSet()
