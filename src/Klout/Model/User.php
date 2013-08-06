@@ -210,7 +210,7 @@ class User extends AbstractModel
             if (!$user->getKloutId()) {
                 throw new InvalidArgumentException('Invalid user data.');
             }
-            $users[(string)$user->getKloutId()] = $user;
+            $users[(string) $user->getKloutId()] = $user;
         }
 
         return $users;

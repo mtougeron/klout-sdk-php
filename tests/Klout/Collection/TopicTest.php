@@ -14,5 +14,5 @@ class TopicTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertGreaterThan(0, 1);
     }
-    
+
 }

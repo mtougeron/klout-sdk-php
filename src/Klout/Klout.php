@@ -46,8 +46,8 @@ class Klout
     /**
      * Construct the class
      *
-     * @param String $apiKey
-     * @param String:Zend\Uri\Uri $apiBaseUri
+     * @param  String                   $apiKey
+     * @param  String:Zend\Uri\Uri      $apiBaseUri
      * @throws InvalidArgumentException
      */
     public function __construct($apiKey, $apiBaseUri = null)
@@ -80,8 +80,8 @@ class Klout
     }
 
     /**
-     * 
-     * @param String:Zend\Uri\Uri $apiBaseUri
+     *
+     * @param  String:Zend\Uri\Uri      $apiBaseUri
      * @throws InvalidArgumentException
      * @return \Klout\Klout
      */
@@ -120,7 +120,7 @@ class Klout
     /**
      * Set the apiKey
      *
-     * @param String $apiKey
+     * @param  String       $apiKey
      * @return \Klout\Klout
      */
     public function setApiKey($apiKey)
@@ -135,7 +135,7 @@ class Klout
      * Set the Client for the class to use. This is so that you can manipulate your
      * own instance of Guzzle\Http\Client and set it to be used.
      *
-     * @param Client $client
+     * @param  Client $client
      * @return Client
      */
     public function setClient(Client $client)
@@ -158,8 +158,8 @@ class Klout
     /**
      * Get a Klout User by a Twitter username
      *
-     * @param String $username
-     * @param Bool $fullData
+     * @param  String            $username
+     * @param  Bool              $fullData
      * @return \Klout\Model\User
      */
     public function getUserByTwitterUsername($username, $fullData = true)
@@ -170,8 +170,8 @@ class Klout
     /**
      * Get a Klout User by a Twitter user ID
      *
-     * @param Numeric $userId
-     * @param Bool $fullData
+     * @param  Numeric           $userId
+     * @param  Bool              $fullData
      * @return \Klout\Model\User
      */
     public function getUserByTwitterId($userId, $fullData = true)
@@ -182,8 +182,8 @@ class Klout
     /**
      * Get a Klout User by a Google+ user ID
      *
-     * @param Numeric $userId
-     * @param Bool $fullData
+     * @param  Numeric           $userId
+     * @param  Bool              $fullData
      * @return \Klout\Model\User
      */
     public function getUserByGooglePlusId($userId, $fullData = true)
@@ -194,8 +194,8 @@ class Klout
     /**
      * Get a Klout User by an Instagram user ID
      *
-     * @param Numeric $userId
-     * @param Bool $fullData
+     * @param  Numeric           $userId
+     * @param  Bool              $fullData
      * @return \Klout\Model\User
      */
     public function getUserByInstagramUserId($userId, $fullData = true)
@@ -206,7 +206,7 @@ class Klout
     /**
      * Get a Twitter Identity for a Klout User ID
      *
-     * @param Numeric $kloutId
+     * @param  Numeric               $kloutId
      * @return \Klout\Model\Identity
      */
     public function getTwitterIdentity($kloutId)
@@ -235,7 +235,7 @@ class Klout
     /**
      * Get the Klout user's score
      *
-     * @param Numeric $kloutId
+     * @param  Numeric            $kloutId
      * @return \Klout\Model\Score
      */
     public function getScoreByKloutId($kloutId)
@@ -262,9 +262,9 @@ class Klout
     /**
      * Get a Klout User by their network ID
      *
-     * @param String $networkName
-     * @param String $networkUserId
-     * @param Bool $fullData
+     * @param  String                   $networkName
+     * @param  String                   $networkUserId
+     * @param  Bool                     $fullData
      * @throws InvalidArgumentException
      * @return \Klout\Model\User
      */
@@ -314,8 +314,8 @@ class Klout
     /**
      * Get a Klout\Model\User by their Klout ID.
      *
-     * @param String $kloutId
-     * @param Bool $fullData
+     * @param  String                    $kloutId
+     * @param  Bool                      $fullData
      * @throws InvalidArgumentException
      * @throws ResourceNotFoundException
      * @return \Klout\Model\User
@@ -373,7 +373,7 @@ class Klout
         $identity->setNetworkName(self::NETWORK_KLOUT);
         $identity->setNetworkUserId($kloutId);
         $user->addIdentity($identity);
-        
+
         return $user;
     }
 
@@ -382,11 +382,11 @@ class Klout
      * into Klout specific ones. If it doesn't know how to handle
      * the exception then it just re-throws it.
      *
-     * @param HttpRequestException $e
+     * @param  HttpRequestException        $e
      * @throws NotAuthorizedException
      * @throws ResourceNotFoundException
      * @throws ServiceUnavailableException
-     * @throws Ambigous <HttpRequestException, \Guzzle\Http\Exception\ClientErrorResponseException, \Guzzle\Http\Exception\ServerErrorResponseException, \Guzzle\Http\Exception\MultiTransferException>
+     * @throws Ambigous                    <HttpRequestException, \Guzzle\Http\Exception\ClientErrorResponseException, \Guzzle\Http\Exception\ServerErrorResponseException, \Guzzle\Http\Exception\MultiTransferException>
      * @return array:NULL
      */
     protected function handleHttpRequestException(HttpRequestException $e)
@@ -424,7 +424,7 @@ class Klout
     /**
      * Check to make sure the networkName is valid.
      *
-     * @param String $networkName
+     * @param  String                   $networkName
      * @throws InvalidArgumentException
      */
     protected function assertValidNetworkName($networkName)
@@ -437,8 +437,8 @@ class Klout
     /**
      * Check to make sure the networkUserId is valid
      *
-     * @param String $networkName
-     * @param String $networkUserId
+     * @param  String                   $networkName
+     * @param  String                   $networkUserId
      * @throws InvalidArgumentException
      */
     protected function assertValidUserIdForNetwork($networkName, $networkUserId)
