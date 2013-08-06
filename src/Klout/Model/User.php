@@ -72,6 +72,9 @@ class User extends AbstractModel
 
     public function addIdentity(Klout\Model\Identity $identity)
     {
+        if (!isset($this->identities)) {
+            $this->identities = new IdentityCollection();
+        }
         $this->identities[$identity->getNetworkName()] = $identity;
 
         return $this;

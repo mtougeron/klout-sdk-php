@@ -211,7 +211,7 @@ class Klout
      */
     public function getTwitterIdentity($kloutId)
     {
-        $this->assertValidKloutId($kloutId);
+        $this->assertValidUserIdForNetwork(self::NETWORK_KLOUT, $kloutId);
 
         /* @var $request Request */
         $request = $this->client->get(
@@ -232,9 +232,15 @@ class Klout
         return $identity;
     }
 
-    public function getScoreForUser($kloutId)
+    /**
+     * Get the Klout user's score
+     *
+     * @param Numeric $kloutId
+     * @return \Klout\Model\Score
+     */
+    public function getScoreByKloutId($kloutId)
     {
-        $this->assertValidKloutId($kloutId);
+        $this->assertValidUserIdForNetwork(self::NETWORK_KLOUT, $kloutId);
 
         /* @var $request Request */
         $request = $this->client->get(
@@ -316,7 +322,7 @@ class Klout
      */
     public function getUser($kloutId, $fullData = true)
     {
-        $this->assertValidKloutId($kloutId);
+        $this->assertValidUserIdForNetwork(self::NETWORK_KLOUT, $kloutId);
 
         try {
             // Get the data for the user
@@ -356,12 +362,18 @@ class Klout
         }
 
         if (empty($userData)) {
-            throw new ResourceNotFoundException('Could not find the user information for Klout user ID: ' . $identity->getKloutId());
+            throw new ResourceNotFoundException('Could not find the user information for Klout user ID: ' . $kloutId);
         }
 
         $user = new User();
         $user->populate($userData, $influenceData, $topicsData);
 
+        $identity = new Identity();
+        $identity->setKloutId($kloutId);
+        $identity->setNetworkName(self::NETWORK_KLOUT);
+        $identity->setNetworkUserId($kloutId);
+        $user->addIdentity($identity);
+        
         return $user;
     }
 
@@ -379,7 +391,6 @@ class Klout
      */
     protected function handleHttpRequestException(HttpRequestException $e)
     {
-
         if ($e instanceof ClientErrorResponseException) {
             switch ($e->getResponse()->getStatusCode()) {
                 case 403;
@@ -408,20 +419,6 @@ class Klout
         // If we don't transform it to a Klout\Exception then
         // rethrow the original exception
         throw $e;
-    }
-
-    /**
-     * Validate the Klout ID
-     *
-     * @param String $kloutId
-     * @throws InvalidArgumentException
-     */
-    protected function assertValidKloutId($kloutId)
-    {
-        $validator = new ValidatorDigits();
-        if (!$validator->isValid($kloutId)) {
-            throw new InvalidArgumentException("'$kloutId'" . ' is not a valid Klout ID.');
-        }
     }
 
     /**
