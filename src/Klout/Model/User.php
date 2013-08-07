@@ -72,6 +72,13 @@ class User extends AbstractModel
     public function __construct(array $userData = null, array $influenceData = null, array $topicsData = null)
     {
 
+        // Initialize these variables to the collection
+        // so that they can always be operated on.
+        $this->setIdentities(new IdentityCollection());
+        $this->setInfluencees(new UserCollection());
+        $this->setInfluencers(new UserCollection());
+        $this->setTopics(new TopicCollection());
+
         if (!empty($userData)) {
             $this->populate($userData, $influenceData, $topicsData);
         }
@@ -108,9 +115,6 @@ class User extends AbstractModel
 
     public function addIdentity(Klout\Model\Identity $identity)
     {
-        if (!isset($this->identities)) {
-            $this->identities = new IdentityCollection();
-        }
         $this->identities[$identity->getNetworkName()] = $identity;
 
         return $this;
