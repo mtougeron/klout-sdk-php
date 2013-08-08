@@ -52,7 +52,7 @@ class Klout
     /**
      * Used to make the calls to the API
      *
-     * @var Guzzle\Http\Client
+     * @var \Guzzle\Http\Client
      */
     protected $client;
 
@@ -60,7 +60,7 @@ class Klout
      * Constructor
      *
      * @param  String                   $apiKey
-     * @param  String:Zend\Uri\Uri      $apiBaseUri
+     * @param  String:\Zend\Uri\Uri     $apiBaseUri
      * @throws InvalidArgumentException
      */
     public function __construct($apiKey, $apiBaseUri = null)
@@ -94,7 +94,7 @@ class Klout
 
     /**
      *
-     * @param  String:Zend\Uri\Uri      $apiBaseUri
+     * @param  String:\Zend\Uri\Uri      $apiBaseUri
      * @throws InvalidArgumentException
      * @return \Klout\Klout
      */
@@ -108,7 +108,7 @@ class Klout
             // Convert the object to a string if necessary
             $apiBaseUri = $apiBaseUri->toString();
         } elseif (!is_string($apiBaseUri)) {
-            throw new InvalidArgumentException('apiBaseUri must be a String or Zend\\Uri\\Uri.');
+            throw new InvalidArgumentException('apiBaseUri must be a String or \\Zend\\Uri\\Uri.');
         }
 
         // Validate the apiBaseUri
@@ -148,14 +148,14 @@ class Klout
      * Set the Client for the class to use. This is so that you can manipulate your
      * own instance of Guzzle\Http\Client and set it to be used.
      *
-     * @param  Client $client
-     * @return Client
+     * @param  \Guzzle\Http\Client $client
+     * @return \Klout\Klout
      */
     public function setClient(Client $client)
     {
         $this->client = $client;
 
-        return $this->client;
+        return $this;
     }
 
     /**
@@ -172,7 +172,7 @@ class Klout
      * Get a Klout User by a Twitter username
      *
      * @param  String            $username
-     * @param  Bool              $fullData
+     * @param  Boolean             $fullData
      * @return \Klout\Model\User
      */
     public function getUserByTwitterUsername($username, $fullData = true)
@@ -184,7 +184,7 @@ class Klout
      * Get a Klout User by a Twitter user ID
      *
      * @param  Numeric           $userId
-     * @param  Bool              $fullData
+     * @param  Boolean           $fullData
      * @return \Klout\Model\User
      */
     public function getUserByTwitterId($userId, $fullData = true)
@@ -196,7 +196,7 @@ class Klout
      * Get a Klout User by a Google+ user ID
      *
      * @param  Numeric           $userId
-     * @param  Bool              $fullData
+     * @param  Boolean             $fullData
      * @return \Klout\Model\User
      */
     public function getUserByGooglePlusId($userId, $fullData = true)
@@ -208,7 +208,7 @@ class Klout
      * Get a Klout User by an Instagram user ID
      *
      * @param  Numeric           $userId
-     * @param  Bool              $fullData
+     * @param  Boolean             $fullData
      * @return \Klout\Model\User
      */
     public function getUserByInstagramUserId($userId, $fullData = true)
@@ -277,7 +277,7 @@ class Klout
      *
      * @param  String                   $networkName
      * @param  String                   $networkUserId
-     * @param  Bool                     $fullData
+     * @param  Boolean                    $fullData
      * @throws InvalidArgumentException
      * @return \Klout\Model\User
      */
@@ -328,7 +328,7 @@ class Klout
      * Get a Klout\Model\User by their Klout ID.
      *
      * @param  String                    $kloutId
-     * @param  Bool                      $fullData
+     * @param  Boolean                     $fullData
      * @throws InvalidArgumentException
      * @throws ResourceNotFoundException
      * @return \Klout\Model\User

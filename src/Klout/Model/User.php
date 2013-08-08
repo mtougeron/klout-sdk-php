@@ -24,7 +24,7 @@ class User extends AbstractModel
     /**
      * The identities for the user
      *
-     * @var Klout\Collection\Identity
+     * @var \Klout\Collection\Identity
      */
     protected $identities;
 
@@ -37,37 +37,37 @@ class User extends AbstractModel
     /**
      * The user's score
      *
-     * @var Klout\Model\Score
+     * @var \Klout\Model\Score
      */
     protected $score;
 
     /**
      * The users who influence this user
      *
-     * @var Klout\Collection\User
+     * @var \Klout\Collection\User
      */
     protected $influencers;
 
     /**
      * The users who are influenced by this user
      *
-     * @var Klout\Collection\User
+     * @var \Klout\Collection\User
      */
     protected $influencees;
 
     /**
      * The topics for this user
      *
-     * @var Klout\Collection\Topic
+     * @var \Klout\Collection\Topic
      */
     protected $topics;
 
     /**
      * The constructor
      *
-     * @param array $userData
-     * @param array $influenceData
-     * @param array $topicsData
+     * @param array $userData (optional)
+     * @param array $influenceData (optional)
+     * @param array $topicsData (optional)
      */
     public function __construct(array $userData = null, array $influenceData = null, array $topicsData = null)
     {
@@ -79,11 +79,21 @@ class User extends AbstractModel
         $this->setInfluencers(new UserCollection());
         $this->setTopics(new TopicCollection());
 
+        if (empty($userData) && (!empty($influenceData) || !empty($topicsData))) {
+            throw new InvalidArgumentException('Must have userData if you have influence or topic data.');
+        }
+
         if (!empty($userData)) {
             $this->populate($userData, $influenceData, $topicsData);
         }
     }
 
+    /**
+     * The Klout Id for the User
+     *
+     * @param String $kloutId
+     * @return \Klout\Model\User
+     */
     public function setKloutId($kloutId)
     {
         $this->kloutId = $kloutId;
@@ -91,11 +101,22 @@ class User extends AbstractModel
         return $this;
     }
 
+    /**
+     * Get the Klout Id
+     *
+     * @return String
+     */
     public function getKloutId()
     {
         return $this->kloutId;
     }
 
+    /**
+     * Set the Collection of identities
+     *
+     * @param \Klout\Collection\Identity $identities
+     * @return \Klout\Model\User
+     */
     public function setIdentities(IdentityCollection $identities)
     {
         $this->identities = $identities;
@@ -103,16 +124,34 @@ class User extends AbstractModel
         return $this;
     }
 
+    /**
+     * Get the Collection of identities
+     *
+     * @return \Klout\Collection\Identity
+     */
     public function getIdentities()
     {
         return $this->identities;
     }
 
+    /**
+     * Get a specific identity from the Collection of
+     * identities that this user has.
+     *
+     * @param String $network
+     * @return \Klout\Collection\Identity
+     */
     public function getIdentity($network = Klout::NETWORK_KLOUT)
     {
         return $this->identities[$network];
     }
 
+    /**
+     * Add a new Identity to the Collection of identities for the user
+     *
+     * @param Klout\Model\Identity $identity
+     * @return \Klout\Model\User
+     */
     public function addIdentity(Klout\Model\Identity $identity)
     {
         $this->identities[$identity->getNetworkName()] = $identity;
@@ -120,11 +159,22 @@ class User extends AbstractModel
         return $this;
     }
 
+    /**
+     * Get the nickname (nick) for the user
+     *
+     * @return string
+     */
     public function getNickname()
     {
         return $this->nickname;
     }
 
+    /**
+     * Set the nickname (nick) for the user
+     *
+     * @param String $nickname
+     * @return \Klout\Model\User
+     */
     public function setNickname($nickname)
     {
         $this->nickname = $nickname;
@@ -132,11 +182,22 @@ class User extends AbstractModel
         return $this;
     }
 
+    /**
+     * Get the Score for the user
+     *
+     * @return \Klout\Model\Score
+     */
     public function getScore()
     {
         return $this->score;
     }
 
+    /**
+     * Set the Score for the user
+     *
+     * @param \Klout\Model\Score $score
+     * @return \Klout\Model\User
+     */
     public function setScore(Klout\Model\Score $score)
     {
         $this->score = $score;
@@ -144,11 +205,22 @@ class User extends AbstractModel
         return $this;
     }
 
+    /**
+     * Get the Collection of User(s) who influence this user
+     *
+     * @return \Klout\Collection\User
+     */
     public function getInfluencers()
     {
         return $this->influencers;
     }
 
+    /**
+     * Set the Collection of User(s) who influence this user
+     *
+     * @param \Klout\Collection\User $influencers
+     * @return \Klout\Model\User
+     */
     public function setInfluencers(UserCollection $influencers)
     {
         $this->influencers = $influencers;
@@ -156,11 +228,22 @@ class User extends AbstractModel
         return $this;
     }
 
+    /**
+     * Get the Collection of User(s) who this user influences
+     *
+     * @return \Klout\Collection\User
+     */
     public function getInfluencees()
     {
         return $this->influencees;
     }
 
+    /**
+     * Set the Collection of User(s) who this user influences
+     *
+     * @param \Klout\Collection\User $influencees
+     * @return \Klout\Model\User
+     */
     public function setInfluencees(UserCollection $influencees)
     {
         $this->influencees = $influencees;
@@ -168,11 +251,22 @@ class User extends AbstractModel
         return $this;
     }
 
+    /**
+     * Get the Topic(s) for this user
+     *
+     * @return \Klout\Collection\Topic
+     */
     public function getTopics()
     {
         return $this->topics;
     }
 
+    /**
+     * Set the Collection of Topic(s) for the user
+     *
+     * @param \Klout\Collection\Topic $topics
+     * @return \Klout\Model\User
+     */
     public function setTopics(TopicCollection $topics)
     {
         $this->topics = $topics;
@@ -180,8 +274,28 @@ class User extends AbstractModel
         return $this;
     }
 
+    /**
+     * Populate the object with an array of data
+     * Allows passing in the influence data array from the API
+     * Allows passing in the topics data array from the API
+     *
+     * @param array $userData
+     * @param array $influenceData (optional)
+     * @param array $topicsData (optional)
+     * @return \Klout\Model\User
+     */
     public function populate(array $userData, array $influenceData = null, array $topicsData = null)
     {
+
+        if (empty($userData) && (!empty($influenceData) || !empty($topicsData))) {
+            throw new InvalidArgumentException('Must have userData if you have influence or topic data.');
+        } elseif (empty($userData)) {
+            return $this;
+        }
+
+        if (empty($userData['kloutId'])) {
+            throw new InvalidArgumentException('userData does not contain a kloutId.');
+        }
 
         $this->setKloutId($userData['kloutId']);
         $this->setNickname($userData['nick']);
@@ -201,32 +315,49 @@ class User extends AbstractModel
         }
         $this->setScore($score);
 
+        $influencers = new UserCollection();
+        $influencees = new UserCollection();
         if (!empty($influenceData)) {
-            $influencersData = array();
-            foreach ($influenceData['myInfluencers'] as $value) {
-                $influencersData[] = array('userData' => $value['entity']['payload']);
+            if (isset($influenceData['myInfluencers']) && !empty($influenceData['myInfluencers'])) {
+                $influencersData = array();
+                foreach ($influenceData['myInfluencers'] as $value) {
+                    if (empty($value['entity']) || empty($value['entity']['payload'])) {
+                        continue;
+                    }
+                    $influencersData[] = array('userData' => $value['entity']['payload']);
+                }
+                $influencers = self::createUserCollection($influencersData);
             }
-            $influencers = self::createUserCollection($influencersData);
 
-            $influenceesData = array();
-            foreach ($influenceData['myInfluencees'] as $value) {
-                $influenceesData[] = array('userData' => $value['entity']['payload']);
+            if (isset($influenceData['myInfluencees']) && !empty($influenceData['myInfluencees'])) {
+                $influenceesData = array();
+                foreach ($influenceData['myInfluencees'] as $value) {
+                    if (empty($value['entity']) || empty($value['entity']['payload'])) {
+                        continue;
+                    }
+                    $influenceesData[] = array('userData' => $value['entity']['payload']);
+                }
+                $influencees = self::createUserCollection($influenceesData);
             }
-            $influencees = self::createUserCollection($influenceesData);
-        } else {
-            $influencers = new UserCollection();
-            $influencees = new UserCollection();
         }
 
         $this->setInfluencers($influencers);
         $this->setInfluencees($influencees);
 
-        $topics = Topic::createTopicCollection($topicsData);
-        $this->setTopics($topics);
+        if (!empty($topicsData)) {
+            $this->setTopics(Topic::createTopicCollection($topicsData));
+        }
 
         return $this;
     }
 
+    /**
+     * Create a Collection of User(s)
+     *
+     * @param array $userArray
+     * @throws InvalidArgumentException
+     * @return \Klout\Collection\User
+     */
     public static function createUserCollection(array $userArray)
     {
         $users = new UserCollection();

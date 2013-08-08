@@ -9,10 +9,25 @@ use Klout\Model\AbstractModel;
 class Identity extends AbstractModel
 {
 
-    /* @var string - The user's Klout ID */
+    /**
+     * The user's Klout Id
+     *
+     * @var String
+     */
     protected $kloutId;
 
-    /* @var string - The user's ID for the network */
+    /**
+     * The name for the network this identity is for
+     *
+     * @var String
+     */
+    protected $networkName;
+
+    /**
+     * The User Id for the network
+     *
+     * @var String
+     */
     protected $networkUserId;
 
     /**
@@ -106,7 +121,6 @@ class Identity extends AbstractModel
      */
     public function populate($kloutId, array $identityData)
     {
-
         if ((empty($kloutId) && empty($this->kloutId)) || empty($identityData)) {
             return $this;
         }

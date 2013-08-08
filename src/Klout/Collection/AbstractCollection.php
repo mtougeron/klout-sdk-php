@@ -93,7 +93,7 @@ abstract class AbstractCollection implements \ArrayAccess, \IteratorAggregate, \
      * Set the item by key. If $key is null or '' then it
      * adds it without the key.
      *
-     * @param String|Numeric|Null $key
+     * @param String:Numeric:Null $key
      * @param \Klout\Model\AbstractModel $value
      * @throws InvalidArgumentException
      * @return \Klout\Collection\AbstractCollection
@@ -150,7 +150,7 @@ abstract class AbstractCollection implements \ArrayAccess, \IteratorAggregate, \
     /**
      * Check if the collection has a specific key
      *
-     * @param String|Numeric $key
+     * @param String:Numeric $key
      * @return boolean
      */
     public function hasKey($key)

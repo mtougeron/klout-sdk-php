@@ -58,8 +58,9 @@ class Topic extends AbstractModel
      */
     public function __construct(array $topicData = null)
     {
-
-        $this->populate($topicData);
+        if (!empty($topicData)) {
+            $this->populate($topicData);
+        }
     }
 
     /**
