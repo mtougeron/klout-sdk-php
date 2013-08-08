@@ -21,6 +21,7 @@
         <mkdir dir="${dir.output}/staging/Klout"/>
         <mkdir dir="${dir.output}/staging/Guzzle"/>
         <mkdir dir="${dir.output}/staging/Symfony"/>
+        <mkdir dir="${dir.output}/staging/Zend"/>
 
         <patternset id="sdk-files">
             <include name="**/*.php" />
@@ -58,6 +59,34 @@
                 <patternset refid="sdk-files"/>
             </fileset>
         </copy>
+
+        <!-- Copy Zend Framework deps -->
+        <copy todir="${dir.output}/staging/Zend">
+            <fileset dir="vendor/zendframework/zend-escaper/Zend">
+                <patternset refid="sdk-files"/>
+            </fileset>
+        </copy>
+        <copy todir="${dir.output}/staging/Zend">
+            <fileset dir="vendor/zendframework/zend-filter/Zend">
+                <patternset refid="sdk-files"/>
+            </fileset>
+        </copy>
+        <copy todir="${dir.output}/staging/Zend">
+            <fileset dir="vendor/zendframework/zend-stdlib/Zend">
+                <patternset refid="sdk-files"/>
+            </fileset>
+        </copy>
+        <copy todir="${dir.output}/staging/Zend">
+            <fileset dir="vendor/zendframework/zend-uri/Zend">
+                <patternset refid="sdk-files"/>
+            </fileset>
+        </copy>
+        <copy todir="${dir.output}/staging/Zend">
+            <fileset dir="vendor/zendframework/zend-validator/Zend">
+                <patternset refid="sdk-files"/>
+            </fileset>
+        </copy>
+        
     </target>
 
     <target name="phar" depends="create-staging" description="Create a phar with an autoloader">

@@ -8,9 +8,10 @@ if (!defined('KLOUT_FILE_PREFIX')) {
 
 $classLoader = new Symfony\Component\ClassLoader\UniversalClassLoader();
 $classLoader->registerNamespaces(array(
-    'Klout'      => KLOUT_FILE_PREFIX,
+    'Klout'    => KLOUT_FILE_PREFIX,
     'Guzzle'   => KLOUT_FILE_PREFIX,
     'Symfony'  => KLOUT_FILE_PREFIX,
+    'Zend'     => KLOUT_FILE_PREFIX,
 ));
 
 $classLoader->register();
