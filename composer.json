@@ -1,7 +1,7 @@
 {
     "name": "mtougeron/klout-sdk-php",
     "description": "SDK for the Klout API v2",
-    "version": "0.0.1",
+    "version": "1.0.0-alpha",
     "type": "library",
     "license": "MIT",
     "keywords": [
