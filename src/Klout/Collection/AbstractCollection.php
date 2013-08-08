@@ -25,7 +25,7 @@ abstract class AbstractCollection implements \ArrayAccess, \IteratorAggregate, \
     /**
      * The constructor
      *
-     * @param array $data
+     * @param  array                    $data
      * @throws InvalidArgumentException
      */
     public function __construct(array $data = null)
@@ -81,7 +81,7 @@ abstract class AbstractCollection implements \ArrayAccess, \IteratorAggregate, \
     /**
      * Return the item by key
      *
-     * @param String $key
+     * @param  String                     $key
      * @return \Klout\Model\AbstractModel
      */
     public function get($key)
@@ -93,8 +93,8 @@ abstract class AbstractCollection implements \ArrayAccess, \IteratorAggregate, \
      * Set the item by key. If $key is null or '' then it
      * adds it without the key.
      *
-     * @param String:Numeric:Null $key
-     * @param \Klout\Model\AbstractModel $value
+     * @param  String:Numeric:Null                  $key
+     * @param  \Klout\Model\AbstractModel           $value
      * @throws InvalidArgumentException
      * @return \Klout\Collection\AbstractCollection
      */
@@ -116,7 +116,7 @@ abstract class AbstractCollection implements \ArrayAccess, \IteratorAggregate, \
     /**
      * Add a non-keyed item to the collection
      *
-     * @param \Klout\Model\AbstractModel $value
+     * @param  \Klout\Model\AbstractModel           $value
      * @return \Klout\Collection\AbstractCollection
      */
     public function add($value)
@@ -127,7 +127,7 @@ abstract class AbstractCollection implements \ArrayAccess, \IteratorAggregate, \
     /**
      * Remove an item from the collection
      *
-     * @param String $key
+     * @param  String                               $key
      * @return \Klout\Collection\AbstractCollection
      */
     public function remove($key)
@@ -150,7 +150,7 @@ abstract class AbstractCollection implements \ArrayAccess, \IteratorAggregate, \
     /**
      * Check if the collection has a specific key
      *
-     * @param String:Numeric $key
+     * @param  String:Numeric $key
      * @return boolean
      */
     public function hasKey($key)

@@ -65,9 +65,9 @@ class User extends AbstractModel
     /**
      * The constructor
      *
-     * @param array $userData (optional)
+     * @param array $userData      (optional)
      * @param array $influenceData (optional)
-     * @param array $topicsData (optional)
+     * @param array $topicsData    (optional)
      */
     public function __construct(array $userData = null, array $influenceData = null, array $topicsData = null)
     {
@@ -91,7 +91,7 @@ class User extends AbstractModel
     /**
      * The Klout Id for the User
      *
-     * @param String $kloutId
+     * @param  String            $kloutId
      * @return \Klout\Model\User
      */
     public function setKloutId($kloutId)
@@ -114,7 +114,7 @@ class User extends AbstractModel
     /**
      * Set the Collection of identities
      *
-     * @param \Klout\Collection\Identity $identities
+     * @param  \Klout\Collection\Identity $identities
      * @return \Klout\Model\User
      */
     public function setIdentities(IdentityCollection $identities)
@@ -138,7 +138,7 @@ class User extends AbstractModel
      * Get a specific identity from the Collection of
      * identities that this user has.
      *
-     * @param String $network
+     * @param  String                     $network
      * @return \Klout\Collection\Identity
      */
     public function getIdentity($network = Klout::NETWORK_KLOUT)
@@ -149,7 +149,7 @@ class User extends AbstractModel
     /**
      * Add a new Identity to the Collection of identities for the user
      *
-     * @param Klout\Model\Identity $identity
+     * @param  Klout\Model\Identity $identity
      * @return \Klout\Model\User
      */
     public function addIdentity(Klout\Model\Identity $identity)
@@ -172,7 +172,7 @@ class User extends AbstractModel
     /**
      * Set the nickname (nick) for the user
      *
-     * @param String $nickname
+     * @param  String            $nickname
      * @return \Klout\Model\User
      */
     public function setNickname($nickname)
@@ -195,7 +195,7 @@ class User extends AbstractModel
     /**
      * Set the Score for the user
      *
-     * @param \Klout\Model\Score $score
+     * @param  \Klout\Model\Score $score
      * @return \Klout\Model\User
      */
     public function setScore(Klout\Model\Score $score)
@@ -218,7 +218,7 @@ class User extends AbstractModel
     /**
      * Set the Collection of User(s) who influence this user
      *
-     * @param \Klout\Collection\User $influencers
+     * @param  \Klout\Collection\User $influencers
      * @return \Klout\Model\User
      */
     public function setInfluencers(UserCollection $influencers)
@@ -241,7 +241,7 @@ class User extends AbstractModel
     /**
      * Set the Collection of User(s) who this user influences
      *
-     * @param \Klout\Collection\User $influencees
+     * @param  \Klout\Collection\User $influencees
      * @return \Klout\Model\User
      */
     public function setInfluencees(UserCollection $influencees)
@@ -264,7 +264,7 @@ class User extends AbstractModel
     /**
      * Set the Collection of Topic(s) for the user
      *
-     * @param \Klout\Collection\Topic $topics
+     * @param  \Klout\Collection\Topic $topics
      * @return \Klout\Model\User
      */
     public function setTopics(TopicCollection $topics)
@@ -279,9 +279,9 @@ class User extends AbstractModel
      * Allows passing in the influence data array from the API
      * Allows passing in the topics data array from the API
      *
-     * @param array $userData
-     * @param array $influenceData (optional)
-     * @param array $topicsData (optional)
+     * @param  array             $userData
+     * @param  array             $influenceData (optional)
+     * @param  array             $topicsData    (optional)
      * @return \Klout\Model\User
      */
     public function populate(array $userData, array $influenceData = null, array $topicsData = null)
@@ -354,7 +354,7 @@ class User extends AbstractModel
     /**
      * Create a Collection of User(s)
      *
-     * @param array $userArray
+     * @param  array                    $userArray
      * @throws InvalidArgumentException
      * @return \Klout\Collection\User
      */

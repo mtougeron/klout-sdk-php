@@ -94,7 +94,7 @@ class Klout
 
     /**
      *
-     * @param  String:\Zend\Uri\Uri      $apiBaseUri
+     * @param  String:\Zend\Uri\Uri     $apiBaseUri
      * @throws InvalidArgumentException
      * @return \Klout\Klout
      */
@@ -172,7 +172,7 @@ class Klout
      * Get a Klout User by a Twitter username
      *
      * @param  String            $username
-     * @param  Boolean             $fullData
+     * @param  Boolean           $fullData
      * @return \Klout\Model\User
      */
     public function getUserByTwitterUsername($username, $fullData = true)
@@ -196,7 +196,7 @@ class Klout
      * Get a Klout User by a Google+ user ID
      *
      * @param  Numeric           $userId
-     * @param  Boolean             $fullData
+     * @param  Boolean           $fullData
      * @return \Klout\Model\User
      */
     public function getUserByGooglePlusId($userId, $fullData = true)
@@ -208,7 +208,7 @@ class Klout
      * Get a Klout User by an Instagram user ID
      *
      * @param  Numeric           $userId
-     * @param  Boolean             $fullData
+     * @param  Boolean           $fullData
      * @return \Klout\Model\User
      */
     public function getUserByInstagramUserId($userId, $fullData = true)
@@ -277,7 +277,7 @@ class Klout
      *
      * @param  String                   $networkName
      * @param  String                   $networkUserId
-     * @param  Boolean                    $fullData
+     * @param  Boolean                  $fullData
      * @throws InvalidArgumentException
      * @return \Klout\Model\User
      */
@@ -328,7 +328,7 @@ class Klout
      * Get a Klout\Model\User by their Klout ID.
      *
      * @param  String                    $kloutId
-     * @param  Boolean                     $fullData
+     * @param  Boolean                   $fullData
      * @throws InvalidArgumentException
      * @throws ResourceNotFoundException
      * @return \Klout\Model\User
