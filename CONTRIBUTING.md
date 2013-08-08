@@ -7,9 +7,18 @@ Making changes, running [PHPUnit](https://github.com/sebastianbergmann/phpunit/)
 
 Running the test suite(s)
 -------------------------
-
+```
 ./vendor/bin/phpunit
+```
+
+Running the coding standard checks
+-------------------------
+```
+./vendor/bin/php-cs-fixer fix -v .
+```
 
 Building the phar
 -------------------------
+```
 ./vendor/bin/phing build
+```
