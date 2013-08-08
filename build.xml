@@ -28,6 +28,8 @@
             <include name="**/*.pem" />
             <include name="**/*.md5" />
             <include name="**/LICENSE*" />
+            <include name="**/README*" />
+            <include name="**/CREDITS*" />
         </patternset>
 
         <!-- Copy deps -->
