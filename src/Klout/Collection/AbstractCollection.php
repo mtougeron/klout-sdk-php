@@ -35,7 +35,7 @@ abstract class AbstractCollection implements \ArrayAccess, \IteratorAggregate, \
      * @param  array                    $data
      * @throws InvalidArgumentException
      */
-    public function __construct(array $data = null)
+    public function __construct(array $data = array())
     {
         if (empty($this->className)) {
             throw new InvalidArgumentException('Must set a className when extending this class.');
