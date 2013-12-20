@@ -1,5 +1,4 @@
 <?xml version="1.0"?>
-<!-- works fine with PHPUnit-3.6.10 -->
 <phpunit
         bootstrap="./tests/Bootstrap.php"
         colors="true"
