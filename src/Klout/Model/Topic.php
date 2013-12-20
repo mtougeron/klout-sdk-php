@@ -63,7 +63,7 @@ class Topic extends AbstractModel
      *
      * @param array $topicData
      */
-    public function __construct(array $topicData = null)
+    public function __construct(array $topicData = array())
     {
         if (!empty($topicData)) {
             $this->populate($topicData);
