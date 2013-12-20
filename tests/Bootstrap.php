@@ -13,4 +13,4 @@ if (!$loader = include __DIR__.'/../vendor/autoload.php') {
         'php composer.phar install'.PHP_EOL);
 }
 
-$loader->add('Klout\Test', __DIR__);
+$loader->add('Klout\Tests', __DIR__);
