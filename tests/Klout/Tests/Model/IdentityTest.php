@@ -24,7 +24,7 @@ class IdentityTest extends \PHPUnit_Framework_TestCase
 
     /**
      * The identity data array for testing
-     * 
+     *
      * @var array
      */
     protected $identityData = array('network' => 'abc123', 'id' => '123456');
@@ -61,7 +61,7 @@ class IdentityTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($identity->getNetworkName());
         $this->assertNull($identity->getNetworkUserId());
     }
-    
+
     /**
      * @covers \Klout\Model\Identity::__construct
      * @covers \Klout\Model\Identity::populate

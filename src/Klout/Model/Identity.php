@@ -9,8 +9,6 @@
 
 namespace Klout\Model;
 
-use Klout\Collection\Identity as IdentityCollection;
-use Klout\Exception\InvalidArgumentException;
 use Klout\Model\AbstractModel;
 
 class Identity extends AbstractModel
