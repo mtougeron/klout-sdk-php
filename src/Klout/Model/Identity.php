@@ -43,7 +43,7 @@ class Identity extends AbstractModel
      * @param String $kloutId
      * @param array  $identityData
      */
-    public function __construct($kloutId = null, array $identityData = null)
+    public function __construct($kloutId = null, array $identityData = array())
     {
         if (!empty($kloutId) && !empty($identityData)) {
             $this->populate($kloutId, $identityData);
@@ -133,35 +133,14 @@ class Identity extends AbstractModel
         }
 
         $this->setKloutId($kloutId);
-        $this->setNetworkName($identityData['network']);
-        $this->setNetworkUserId($identityData['id']);
+        if (isset($identityData['network'])) {
+            $this->setNetworkName($identityData['network']);
+        }
+        if (isset($identityData['id'])) {
+            $this->setNetworkUserId($identityData['id']);
+        }
 
         return $this;
-    }
-
-    /**
-     * Create an identity collection based on an array of identities
-     *
-     * @param  array                      $identityArray
-     * @throws InvalidArgumentException
-     * @return \Klout\Collection\Identity
-     */
-    public static function createIdentityCollection(array $identityArray)
-    {
-        $identities = new IdentityCollection();
-        if (empty($identityArray)) {
-            return $identities;
-        }
-
-        foreach ($identityArray as $identityData) {
-            $identity = new self($identityData);
-            if (!$identity->getKloutId()) {
-                throw new InvalidArgumentException('Invalid identity data.');
-            }
-            $identities[$identity->getNetworkName()] = $identity;
-        }
-
-        return $identities;
     }
 
 }
