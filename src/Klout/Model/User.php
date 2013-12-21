@@ -13,6 +13,7 @@ use Klout;
 use Klout\Collection\Identity as IdentityCollection;
 use Klout\Collection\Topic as TopicCollection;
 use Klout\Collection\User as UserCollection;
+use Klout\Exception\InvalidArgumentException;
 use Klout\Model\AbstractModel;
 use Klout\Model\Identity;
 use Klout\Model\Score;
