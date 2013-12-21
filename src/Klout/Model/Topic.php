@@ -220,12 +220,24 @@ class Topic extends AbstractModel
             return $this;
         }
 
-        $this->setTopicId($topicData['id']);
-        $this->setdisplayName($topicData['displayName']);
-        $this->setName($topicData['name']);
-        $this->setSlug($topicData['slug']);
-        $this->setImageUrl($topicData['imageUrl']);
-        $this->setTopicType($topicData['topicType']);
+        if (isset($topicData['id'])) {
+            $this->setTopicId($topicData['id']);
+        }
+        if (isset($topicData['displayName'])) {
+            $this->setdisplayName($topicData['displayName']);
+        }
+        if (isset($topicData['name'])) {
+            $this->setName($topicData['name']);
+        }
+        if (isset($topicData['slug'])) {
+            $this->setSlug($topicData['slug']);
+        }
+        if (isset($topicData['imageUrl'])) {
+            $this->setImageUrl($topicData['imageUrl']);
+        }
+        if (isset($topicData['topicType'])) {
+            $this->setTopicType($topicData['topicType']);
+        }
 
         return $this;
     }
