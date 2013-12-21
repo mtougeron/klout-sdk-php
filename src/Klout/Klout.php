@@ -449,8 +449,16 @@ class Klout
      */
     protected function assertValidNetworkName($networkName)
     {
-        if (!preg_match('/^[A-Za-z0-9]*$/', $networkName)) {
-            throw new InvalidArgumentException("'$networkName'" . ' is not a valid network name.');
+        switch ($networkName) {
+            case self::NETWORK_GOOGLE_PLUS:
+            case self::NETWORK_INSTAGRAM:
+            case self::NETWORK_KLOUT:
+            case self::NETWORK_TWITTER:
+            case self::NETWORK_TWITTER_ID:
+                break;
+            default:
+                throw new InvalidArgumentException("'$networkName'" . ' is not a valid network name.');
+                break;
         }
     }
 

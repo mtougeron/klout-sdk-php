@@ -184,7 +184,8 @@ JSONEND;
 
     public function testInvalidNetworkName()
     {
-        $this->setExpectedException('Klout\Exception\ServiceUnavailableException');
+        $this->setupMockClient();
+        $this->setExpectedException('Klout\Exception\InvalidArgumentException');
         $this->klout->getUserByNetwork('asdqsdasd', 1234);
     }
 
