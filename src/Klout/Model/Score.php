@@ -9,12 +9,13 @@
 
 namespace Klout\Model;
 
-use Klout\Exception;
 use Klout\Exception\InvalidArgumentException;
+use Klout\Exception\LogicException;
 use Klout\Model\AbstractModel;
 
 class Score extends AbstractModel
 {
+
     /**
      * The user's Klout Id
      *
@@ -49,7 +50,7 @@ class Score extends AbstractModel
      * @param String $kloutId
      * @param array  $scoreData
      */
-    public function __construct($kloutId = null, array $scoreData = null)
+    public function __construct($kloutId = null, array $scoreData = array())
     {
         if (!empty($kloutId) && !empty($scoreData)) {
             $this->populate($kloutId, $scoreData);
@@ -116,6 +117,16 @@ class Score extends AbstractModel
     }
 
     /**
+     * Get the bucket the score is part of
+     *
+     * @return String
+     */
+    public function getBucket()
+    {
+        return $this->bucket;
+    }
+
+    /**
      * Set the array of delta values
      *
      * @param  array              $deltas
@@ -142,14 +153,14 @@ class Score extends AbstractModel
      * Get a specific score delta
      *
      * @param  String                   $deltaName
-     * @throws Exception
+     * @throws LogicException
      * @throws InvalidArgumentException
      * @return Float
      */
     public function getDeltaByName($deltaName)
     {
         if (empty($this->deltas)) {
-            throw new Exception('Score Deltas for user not loaded.');
+            throw new LogicException('Score Deltas for user not loaded.');
         }
 
         if (!isset($this->deltas[$deltaName])) {
@@ -162,19 +173,28 @@ class Score extends AbstractModel
     /**
      * Populate the object based on an array of data
      *
-     * @param  String             $kloutId
-     * @param  array              $scoreData
+     * @param  String                   $kloutId
+     * @param  array                    $scoreData
+     * @throws InvalidArgumentException
      * @return \Klout\Model\Score
      */
     public function populate($kloutId, array $scoreData)
     {
-        if ((empty($kloutId) && empty($this->kloutId)) || empty($scoreData)) {
+        if (empty($kloutId)) {
+            throw new InvalidArgumentException('Invalid kloutId.');
+        }
+        $this->setKloutId($kloutId);
+
+        if (empty($scoreData)) {
             return $this;
         }
 
-        $this->setKloutId($kloutId);
-        $this->setBucket($scoreData['bucket']);
-        $this->setScore($scoreData['score']);
+        if (isset($scoreData['bucket'])) {
+            $this->setBucket($scoreData['bucket']);
+        }
+        if (isset($scoreData['score'])) {
+            $this->setScore($scoreData['score']);
+        }
 
         // Have to conditionalize this. Sometimes it is called
         // scoreDelta and sometimes scoreDeltas
