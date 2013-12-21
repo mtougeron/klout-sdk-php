@@ -169,4 +169,105 @@ class ScoreTest extends \PHPUnit_Framework_TestCase
         $score->getDeltaByName('foo');
     }
 
+    /**
+     * @covers \Klout\Model\Score::populate
+     */
+    public function testPopulateWithInvalidKloutId()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $score = new Score();
+        $score->populate('', array());
+    }
+
+    /**
+     * @covers \Klout\Model\Score::populate
+     */
+    public function testPopulateWithoutScoreData()
+    {
+        $score = new Score();
+        $score->populate($this->kloutId, array());
+        $this->assertEquals($this->kloutId, $score->getKloutId());
+        $this->assertNull($score->getScore());
+        $this->assertNull($score->getBucket());
+        $this->assertNull($score->getDeltas());
+    }
+
+    /**
+     * @covers \Klout\Model\Score::populate
+     */
+    public function testPopulateWithScoreDelta()
+    {
+        $score = new Score();
+        $score->populate($this->kloutId, $this->scoreData);
+        $this->assertEquals($this->kloutId, $score->getKloutId());
+        $this->assertEquals($this->scoreData['score'], $score->getScore());
+        $this->assertEquals($this->scoreData['bucket'], $score->getBucket());
+        $this->assertEquals($this->scoreData['scoreDelta'], $score->getDeltas());
+    }
+
+    /**
+     * @covers \Klout\Model\Score::populate
+     */
+    public function testPopulateWithScoreDeltaWithS()
+    {
+        $data = $this->scoreData;
+        $data['scoreDeltas'] = $data['scoreDelta'];
+        unset($data['scoreDelta']);
+
+        $score = new Score();
+        $score->populate($this->kloutId, $data);
+        $this->assertEquals($this->kloutId, $score->getKloutId());
+        $this->assertEquals($this->scoreData['score'], $score->getScore());
+        $this->assertEquals($this->scoreData['bucket'], $score->getBucket());
+        $this->assertEquals($this->scoreData['scoreDelta'], $score->getDeltas());
+    }
+
+    /**
+     * @covers \Klout\Model\Score::populate
+     */
+    public function testPopulateWithoutBucket()
+    {
+        $data = $this->scoreData;
+        unset($data['bucket']);
+
+        $score = new Score();
+        $score->populate($this->kloutId, $data);
+        $this->assertEquals($this->kloutId, $score->getKloutId());
+        $this->assertEquals($this->scoreData['score'], $score->getScore());
+        $this->assertNull($score->getBucket());
+        $this->assertEquals($this->scoreData['scoreDelta'], $score->getDeltas());
+    }
+
+    /**
+     * @covers \Klout\Model\Score::populate
+     */
+    public function testPopulateWithoutScore()
+    {
+        $data = $this->scoreData;
+        unset($data['score']);
+
+        $score = new Score();
+        $score->populate($this->kloutId, $data);
+        $this->assertEquals($this->kloutId, $score->getKloutId());
+        $this->assertNull($score->getScore());
+        $this->assertEquals($this->scoreData['bucket'], $score->getBucket());
+        $this->assertEquals($this->scoreData['scoreDelta'], $score->getDeltas());
+    }
+
+    /**
+     * @covers \Klout\Model\Score::populate
+     */
+    public function testPopulateWithoutScoreDelta()
+    {
+        $data = $this->scoreData;
+        unset($data['scoreDelta']);
+
+        $score = new Score();
+        $score->populate($this->kloutId, $data);
+        $this->assertEquals($this->kloutId, $score->getKloutId());
+        $this->assertEquals($this->scoreData['score'], $score->getScore());
+        $this->assertEquals($this->scoreData['bucket'], $score->getBucket());
+        $this->assertNull($score->getDeltas());
+    }
+
 }
