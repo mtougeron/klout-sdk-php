@@ -9,6 +9,7 @@
 
 namespace Klout\Model;
 
+use Klout\Exception\InvalidArgumentException;
 use Klout\Model\AbstractModel;
 
 class Identity extends AbstractModel
@@ -120,17 +121,22 @@ class Identity extends AbstractModel
     /**
      * Populate the object with an array of data.
      *
-     * @param  String                $kloutId
-     * @param  array                 $identityData
+     * @param  String                   $kloutId
+     * @param  array                    $identityData
+     * @throws InvalidArgumentException
      * @return \Klout\Model\Identity
      */
     public function populate($kloutId, array $identityData)
     {
-        if ((empty($kloutId) && empty($this->kloutId)) || empty($identityData)) {
+        if (empty($kloutId)) {
+            throw new InvalidArgumentException('Invalid kloutId.');
+        }
+        $this->setKloutId($kloutId);
+
+        if (empty($identityData)) {
             return $this;
         }
 
-        $this->setKloutId($kloutId);
         if (isset($identityData['network'])) {
             $this->setNetworkName($identityData['network']);
         }
