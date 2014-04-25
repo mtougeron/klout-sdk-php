@@ -71,6 +71,20 @@ class User extends AbstractModel
     protected $topics;
 
     /**
+     * Data returned from klout about user influencers
+     * 
+     * @var array
+     */
+    protected $savedInfluencers;
+
+    /**
+     * Data returned from klout about user topics
+     * 
+     * @var array
+     */
+    protected $savedTopics;
+
+    /**
      * The constructor
      *
      * @param array $userData      (optional)
@@ -281,6 +295,46 @@ class User extends AbstractModel
 
         return $this;
     }
+    
+    /**
+     * Save Klout influencers response data
+     * 
+     * @param $data
+     */
+    public function saveInfluencers($data){
+        $this->savedInfluencers = $data;
+
+        return $this;
+    }
+    
+     /**
+     * Save Klout topics response data
+     * 
+     * @param $data
+     */
+    public function saveTopics($data){
+        $this->savedTopics = $data;
+
+        return $this;
+    }
+    
+     /**
+     * Get Klout influencers response data
+     * 
+     * @param $data
+     */
+    public function getSavedInfluencers(){
+        return $this->savedInfluencers;
+    }
+    
+     /**
+     * Get Klout topics response data
+     * 
+     * @param $data
+     */
+    public function getSavedTopics(){
+        return $this->savedTopics;
+    }
 
     /**
      * Populate the object with an array of data
@@ -327,6 +381,7 @@ class User extends AbstractModel
         $influencees = new UserCollection();
         if (!empty($influenceData)) {
             if (isset($influenceData['myInfluencers']) && !empty($influenceData['myInfluencers'])) {
+                $this->saveInfluencers($influenceData['myInfluencers']);
                 $influencersData = array();
                 foreach ($influenceData['myInfluencers'] as $value) {
                     if (empty($value['entity']) || empty($value['entity']['payload'])) {
@@ -351,8 +406,10 @@ class User extends AbstractModel
 
         $this->setInfluencers($influencers);
         $this->setInfluencees($influencees);
-
+    
         if (!empty($topicsData)) {
+            //save topics data
+            $this->saveTopics($topicsData);
             $this->setTopics(Topic::createTopicCollection($topicsData));
         }
 
