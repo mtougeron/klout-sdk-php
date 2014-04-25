@@ -62,6 +62,13 @@ class Klout
      * @var \Guzzle\Http\Client
      */
     protected $client;
+    
+    /**
+     * Used to disable assertValidUserIdForNetwork validation for characters
+     * 
+     * @var boolean
+     */
+    protected $escapeValidation = false;
 
     /**
      * Constructor
@@ -485,11 +492,22 @@ class Klout
                 }
                 break;
             default:
-                if (!preg_match('/^[A-Za-z0-9]*$/', $networkUserId)) {
+                if (!preg_match('/^[A-Za-z0-9]*$/', $networkUserId) && $this->escapeValidation == false) {
                     throw new InvalidArgumentException("'$networkUserId'" . ' is not a valid network user ID.');
                 }
                 break;
         }
+    }
+    
+    /**
+     * Don't let assertValidUserIdForNetwork to throw exception based on characters
+     * 
+     * @return $this
+     */
+    public function escapeValidation(){
+        $this->escapeValidation = true;
+        
+        return $this;
     }
 
 }
